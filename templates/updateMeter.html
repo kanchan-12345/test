@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Smart Meter</title>
+    <script>
+        async function updateMeter() {
+            const data = {
+                IDM: document.getElementById("updateMeterID").value,
+                newHPBM: document.getElementById("updateMeterHPBM").value
+            };
+            await fetch('/updateMeter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(res => res.json()).then(alert);
+        }
+    </script>
+</head>
+<body>
+    <h2>Update Smart Meter</h2>
+    <form>
+        <label>Meter ID:</label>
+        <input type="text" id="updateMeterID" required><br>
+        <label>New Public Key:</label>
+        <input type="text" id="updateMeterHPBM" required><br>
+        <button type="button" onclick="updateMeter()">Update Meter</button>
+    </form>
+</body>
+</html>

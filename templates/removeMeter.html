@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remove Smart Meter</title>
+    <script>
+        async function removeMeter() {
+            const data = { IDM: document.getElementById("removeMeterID").value };
+            await fetch('/removeMeter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(res => res.json()).then(alert);
+        }
+    </script>
+</head>
+<body>
+    <h2>Remove Smart Meter</h2>
+    <form>
+        <label>Meter ID:</label>
+        <input type="text" id="removeMeterID" required><br>
+        <button type="button" onclick="removeMeter()">Remove Meter</button>
+    </form>
+</body>
+</html>

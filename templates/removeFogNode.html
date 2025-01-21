@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remove Fog Node</title>
+    <script>
+        async function removeFogNode() {
+            const data = { IDF: document.getElementById("removeFogID").value };
+            await fetch('/removeFogNode', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(res => res.json()).then(alert);
+        }
+    </script>
+</head>
+<body>
+    <h2>Remove Fog Node</h2>
+    <form>
+        <label>Fog Node ID:</label>
+        <input type="text" id="removeFogID" required><br>
+        <button type="button" onclick="removeFogNode()">Remove Fog Node</button>
+    </form>
+</body>
+</html>

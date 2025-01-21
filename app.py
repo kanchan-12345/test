@@ -1,95 +1,98 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, redirect,session
+from flask_sqlalchemy import SQLAlchemy
+import bcrypt
+
+
 
 app = Flask(__name__)
 
-# Simulating the databases as dictionaries
-meterDB = {}
-fogDB = {}
+# SQLite Database Configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///smart_meter.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+app.secret_key = 'secret_key'
 
-# Function to add a new smart meter
+
+# Smart Meter Model
+class SmartMeter(db.Model):
+    id = db.Column(db.String(50), primary_key=True)  # Meter ID
+    hpbm = db.Column(db.String(100), nullable=False)  # Public Key
+    di = db.Column(db.String(100), nullable=False)  # Device Info
+
+
+
+# Fog Node Model
+class FogNode(db.Model):
+    id = db.Column(db.String(50), primary_key=True)  # Fog Node ID
+    hpbf = db.Column(db.String(100), nullable=False)  # Public Key
+
+# Initialize the Database
+with app.app_context():
+    db.create_all()
+
+# API Endpoint to Add Smart Meter
+# API Endpoint to Add Smart Meter
 @app.route('/addMeter', methods=['POST'])
 def add_meter():
-    addM = request.json
-    newIDM = addM.get('newIDM')
-    newHPBM = addM.get('newHPBM')
-    DI = addM.get('DI')
-    
-    # Simulating the asset registry operation
-    meterDB[newIDM] = {'HPBM': newHPBM, 'DI': DI}
-    
-    return jsonify({'message': 'Smart meter added successfully', 'data': meterDB[newIDM]}), 201
+    data = request.json
+    new_meter = SmartMeter(id=data['newIDM'], hpbm=data['newHPBM'], di=data['DI'])
+    db.session.add(new_meter)
+    db.session.commit()
+    return jsonify({"message": "Smart meter added successfully!"})
 
 
-# Function to add a new fog node
+# API Endpoint to Add Fog Node
 @app.route('/addFogNode', methods=['POST'])
 def add_fog_node():
-    addF = request.json
-    newIDF = addF.get('newIDF')
-    newHPBF = addF.get('newHPBF')
-    
-    # Simulating the asset registry operation
-    fogDB[newIDF] = {'HPBF': newHPBF}
-    
-    return jsonify({'message': 'Fog node added successfully', 'data': fogDB[newIDF]}), 201
+    data = request.json
+    new_fog = FogNode(id=data['newIDF'], hpbf=data['newHPBF'])
+    db.session.add(new_fog)
+    db.session.commit()
+    return jsonify({"message": "Fog node added successfully!"})
 
-
-# Function to remove a smart meter
+# API Endpoint to Remove Smart Meter
 @app.route('/removeMeter', methods=['POST'])
 def remove_meter():
-    removeM = request.json
-    IDM = removeM.get('IDM')
-    
-    # Simulating the removal from the asset registry
-    if IDM in meterDB:
-        del meterDB[IDM]
-        return jsonify({'message': 'Smart meter removed successfully'}), 200
-    else:
-        return jsonify({'message': 'Smart meter not found'}), 404
+    data = request.json
+    meter = SmartMeter.query.get(data['IDM'])
+    if meter:
+        db.session.delete(meter)
+        db.session.commit()
+        return jsonify({"message": "Smart meter removed successfully!"})
+    return jsonify({"error": "Meter not found"}), 404
 
-
-# Function to remove a fog node
+# API Endpoint to Remove Fog Node
 @app.route('/removeFogNode', methods=['POST'])
 def remove_fog_node():
-    removeF = request.json
-    IDF = removeF.get('IDF')
-    
-    # Simulating the removal from the asset registry
-    if IDF in fogDB:
-        del fogDB[IDF]
-        return jsonify({'message': 'Fog node removed successfully'}), 200
-    else:
-        return jsonify({'message': 'Fog node not found'}), 404
+    data = request.json
+    fog_node = FogNode.query.get(data['IDF'])
+    if fog_node:
+        db.session.delete(fog_node)
+        db.session.commit()
+        return jsonify({"message": "Fog node removed successfully!"})
+    return jsonify({"error": "Fog node not found"}), 404
 
-
-# Function to update fog node public key
-@app.route('/updateFogNode', methods=['POST'])
-def update_fog_node():
-    updateF = request.json
-    IDF = updateF.get('IDF')
-    newHPBF = updateF.get('newHPBF')
-    
-    # Simulating the update in the asset registry
-    if IDF in fogDB:
-        fogDB[IDF]['HPBF'] = newHPBF
-        return jsonify({'message': 'Fog node public key updated successfully', 'data': fogDB[IDF]}), 200
-    else:
-        return jsonify({'message': 'Fog node not found'}), 404
-
-
-# Function to update smart meter public key
+# API Endpoint to Update Smart Meter
 @app.route('/updateMeter', methods=['POST'])
 def update_meter():
-    updateM = request.json
-    IDM = updateM.get('IDM')
-    newHPBM = updateM.get('newHPBM')
-    
-    # Simulating the update in the asset registry
-    if IDM in meterDB:
-        meterDB[IDM]['HPBM'] = newHPBM
-        return jsonify({'message': 'Smart meter public key updated successfully', 'data': meterDB[IDM]}), 200
-    else:
-        return jsonify({'message': 'Smart meter not found'}), 404
+    data = request.json
+    meter = SmartMeter.query.get(data['IDM'])
+    if meter:
+        meter.hpbm = data['newHPBM']
+        db.session.commit()
+        return jsonify({"message": "Smart meter updated successfully!"})
+    return jsonify({"error": "Meter not found"}), 404
 
+# API Endpoint to Update Fog Node
+@app.route('/updateFogNode', methods=['POST'])
+def update_fog_node():
+    data = request.json
+    fog_node = FogNode.query.get(data['IDF'])
+    if fog_node:
+        fog_node.hpbf = data['newHPBF']
+        db.session.commit()
+        return jsonify({"message": "Fog node updated successfully!"})
+    return jsonify({"error": "Fog node not found"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Smart Meter</title>
+    <script>
+        async function addMeter() {
+            const data = {
+                newIDM: document.getElementById("meterID").value,
+                newHPBM: document.getElementById("meterHPBM").value,
+                DI: document.getElementById("meterDI").value
+            };
+            await fetch('/addMeter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(res => res.json()).then(alert);
+        }
+    </script>
+</head>
+<body>
+    <h2>Add Smart Meter</h2>
+    <form>
+        <label>Meter ID:</label>
+        <input type="text" id="meterID"  name="meterID" required><br>
+        <label>Public Key:</label>
+        <input type="text" id="meterHPBM"  name="meterHPBM"  required><br>
+        <label>Device Info:</label>
+        <input type="text" id="meterDI"  name="id"required><br>
+        <button type="button" onclick="addMeter()">Add Meter</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Fog Node</title>
+    <script>
+        async function updateFogNode() {
+            const data = {
+                IDF: document.getElementById("updateFogID").value,
+                newHPBF: document.getElementById("updateFogHPBF").value
+            };
+            await fetch('/updateFogNode', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(res => res.json()).then(alert);
+        }
+    </script>
+</head>
+<body>
+    <h2>Update Fog Node</h2>
+    <form>
+        <label>Fog Node ID:</label>
+        <input type="text" id="updateFogID" required><br>
+        <label>New Public Key:</label>
+        <input type="text" id="updateFogHPBF" required><br>
+        <button type="button" onclick="updateFogNode()">Update Fog Node</button>
+    </form>
+</body>
+</html>

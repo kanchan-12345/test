@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Fog Node</title>
+    <script>
+        async function addFogNode() {
+            const data = {
+                newIDF: document.getElementById("fogID").value,
+                newHPBF: document.getElementById("fogHPBF").value
+            };
+            await fetch('/addFogNode', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(res => res.json()).then(alert);
+        }
+    </script>
+</head>
+<body>
+    <h2>Add Fog Node</h2>
+    <form>
+        <label>Fog Node ID:</label>
+        <input type="text" id="fogID" required><br>
+        <label>Public Key:</label>
+        <input type="text" id="fogHPBF" required><br>
+        <button type="button" onclick="addFogNode()">Add Fog Node</button>
+    </form>
+</body>
+</html>
