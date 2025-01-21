@@ -22,12 +22,19 @@
     <h2>Add Smart Meter</h2>
     <form>
         <label>Meter ID:</label>
-        <input type="text" id="meterID"  name="meterID" required><br>
+        <input type="text" id="meterID" name="meterID" required><br>
         <label>Public Key:</label>
-        <input type="text" id="meterHPBM"  name="meterHPBM"  required><br>
+        <input type="text" id="meterHPBM" name="meterHPBM" required><br>
         <label>Device Info:</label>
-        <input type="text" id="meterDI"  name="id"required><br>
+        <input type="text" id="meterDI" name="id" required><br>
         <button type="button" onclick="addMeter()">Add Meter</button>
+        <br>
+        <label for="fogNode">Select Fog Node:</label>
+        <select id="fogNode" name="fogNode">
+            {% for node in fog_nodes %}
+                <option value="{{ node }}">{{ node }}</option>
+            {% endfor %}
+        </select><br>
     </form>
 </body>
 </html>

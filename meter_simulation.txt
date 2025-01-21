@@ -1,0 +1,15 @@
+1. meter simulation
+    check -->   if any meter_ID is present in local_storage --> already logged in
+                if no meter_ID present in local_storage then go to login page 
+
+        1. voltage
+        2. power (p = VI)
+
+
+
+2. get bill
+    check -->   if any meter_ID is present in local_storage --> already logged in
+                if no meter_ID present in local_storage then go to login page 
+
+        - button named (get bill) --> sends a request to server to `get-bill` route --> he will get the bill and power consumed
+            now show him the result (bill , power_consumed)

@@ -1,0 +1,14 @@
+1. meter_info.txt
+
+2. add login page
+    login:
+        1. meter_ID
+        2. password
+
+    when you login --> store meter_ID in local_storage
+
+3. logout
+    remove meter_ID stored in local_storage
+
+4. meter_simulation.txt
+
