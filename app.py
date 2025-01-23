@@ -50,7 +50,9 @@ def index():
     fog_nodes = FogNode.query.all()
     return render_template('addMeter.html', fog_nodes=fog_nodes)
 
-
+@app.route("/login-meter")
+def smart_meter_login():
+    return render_template('meterlogin.html')
 
 @app.route('/addFogNode')
 def addFogNode():
@@ -63,6 +65,10 @@ def removeMeter():
 @app.route('/removeFogNode')
 def removeFogNode():
     return render_template('removeFogNode.html')
+
+@app.route('/meter-dashboard')
+def meter_dashboard():
+    return render_template('meterDashboard.html')
 
 # API Endpoint to Add Smart Meter
 # API Endpoint to Add Smart Meter
@@ -82,8 +88,7 @@ def add_meter():
         fog_node=data['fog_node']
     )
     db.session.add(new_meter)
-    db.session.commit()
-
+    # db.session.commit()
 
     # algo to generate signature (id , fog_node) 
     # OR 
@@ -92,7 +97,7 @@ def add_meter():
     #     search meter_id in database
     #     generate a signature for that meter and fog_node
     #     return signature (store signature in cloud database)
-    return jsonify({"message": "Smart meter added successfully!"})
+    return jsonify({"message": "Smart meter added successfully!"}), 200
 
 
 # API Endpoint to Add Fog Node
@@ -183,12 +188,15 @@ def get_bill():
 def login_meter():
     data = request.json
     meter = SmartMeter.query.get(data['meterId'])
+    
     if meter:
+        if(meter.password == data['password']):
+            return jsonify({"message": "Meter logged in successfully!", "status": 200}), 200
         # algo to verify the signature
         # if signature is valid then return success
         # else return error
         # if success then send {meter_id, success_message} to meter
-        return jsonify({"message": "Meter logged in successfully!"})
+        # return jsonify({"message": "Meter logged in successfully!"})
     return jsonify({"error": "Meter not found"}), 404
 
 

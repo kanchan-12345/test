@@ -60,11 +60,19 @@
                 password: document.getElementById("password").value,
                 fog_node: document.getElementById("fogNode").value
             };
-            await fetch('/addMeter', {
+            const res = await fetch('/addMeter', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
-            }).then(res => res.json()).then(alert);
+            });
+            const response = await res.json();
+            if (res.status === 200) {
+                alert(response.message);
+                window.location.href = '/login-meter';
+            } else {
+                alert(response.message);
+            }
+            
         }
     </script>
 </head>

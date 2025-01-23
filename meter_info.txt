@@ -1,7 +1,0 @@
-1. meterId (already in meter written) --> Primary key : varchar
-2. state : string
-3. city : string
-4. house number : varchar
-5. phone number : int
-6. password : string 
-7. which fog node he want to connect to : string
