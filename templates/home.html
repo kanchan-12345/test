@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Meter Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            background-color: rgb(205, 143, 61);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            background: #363535;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            margin: 0;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+        }
+        .hero {
+            background: url('cityscape.jpg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .hero .cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .cta button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cta button:nth-child(1) {
+            background: #45ac48;
+            color: white;
+        }
+        .cta button:nth-child(2) {
+            background: #f4f4f4;
+            color: #333;
+        }
+        .features {
+            padding: 2rem;
+            text-align: center;
+        }
+        .features h2 {
+            margin-bottom: 1.5rem;
+        }
+        .features .feature-list {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .features .feature-item {
+            max-width: 200px;
+        }
+        .testimonials, .pricing, footer {
+            padding: 2rem;
+            text-align: center;
+        }
+        footer {
+            background: #8e8787;
+            color: white;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Smart Meter Com.</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#support">Support</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Empower Your Energy Usage</h1>
+        <p>Monitor, control, and optimize your energy consumption with our state-of-the-art smart meters.</p>
+        <div class="cta">
+            <a href="next.html"><button>Get Started</button></a>
+            <button>Learn More</button>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <h2>Why Choose Our Smart Meters?</h2>
+        <div class="feature-list">
+            <div class="feature-item">
+                <h3>Real-Time Monitoring</h3>
+                <p>Track your energy usage instantly.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Automatic Alerts</h3>
+                <p>Stay informed with alerts and reports.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Cost Optimization</h3>
+                <p>Save on your energy bills.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Mobile Access</h3>
+                <p>Control energy from your phone.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <h2>What Our Customers Say</h2>
+        <p>"The smart meter transformed our energy efficiency! Highly recommend it."</p>
+        <p>- John D.</p>
+    </section>
+
+   
+    <footer>
+        <p>&copy; 2025 Smart Meter Co. All rights reserved.</p>
+        <div>
+            <a href="#">About Us</a> | <a href="#">Blog</a> | <a href="#">Careers</a> | <a href="#">Terms & Conditions</a>
+        </div>
+        <p>Contact: support@smartmeter.com | +123-456-7890</p>
+        <p>Stay updated on the latest in energy management.</p>
+    </footer>
+</body>
+</html>

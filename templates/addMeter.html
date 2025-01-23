@@ -3,12 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Smart Meter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            background: white;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: left;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
     <script>
         async function addMeter() {
             const data = {
-                newIDM: document.getElementById("meterID").value,
-                newHPBM: document.getElementById("meterHPBM").value,
-                DI: document.getElementById("meterDI").value
+                meter_ID: document.getElementById("meterID").value,
+                state: document.getElementById("state").value,
+                city: document.getElementById("city").value,
+                house_number: document.getElementById("houseNumber").value,
+                phone_number: document.getElementById("phoneNumber").value,
+                password: document.getElementById("password").value,
+                fog_node: document.getElementById("fogNode").value
             };
             await fetch('/addMeter', {
                 method: 'POST',
@@ -23,18 +73,23 @@
     <form>
         <label>Meter ID:</label>
         <input type="text" id="meterID" name="meterID" required><br>
-        <label>Public Key:</label>
-        <input type="text" id="meterHPBM" name="meterHPBM" required><br>
-        <label>Device Info:</label>
-        <input type="text" id="meterDI" name="id" required><br>
-        <button type="button" onclick="addMeter()">Add Meter</button>
-        <br>
+        <label>State:</label>
+        <input type="text" id="state" name="state" required><br>
+        <label>City:</label>
+        <input type="text" id="city" name="city" required><br>
+        <label>House Number:</label>
+        <input type="text" id="houseNumber" name="houseNumber" required><br>
+        <label>Phone Number:</label>
+        <input type="number" id="phoneNumber" name="phoneNumber" required><br>
+        <label>Password:</label>
+        <input type="password" id="password" name="password" required><br>
         <label for="fogNode">Select Fog Node:</label>
         <select id="fogNode" name="fogNode">
             {% for node in fog_nodes %}
                 <option value="{{ node }}">{{ node }}</option>
             {% endfor %}
         </select><br>
+        <button type="button" onclick="addMeter()">Add Meter</button>
     </form>
 </body>
 </html>

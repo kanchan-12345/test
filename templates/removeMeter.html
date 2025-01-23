@@ -3,9 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Remove Smart Meter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        input {
+            padding: 8px;
+            margin: 10px 0;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #ff4c4c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #d43f3f;
+        }
+    </style>
     <script>
         async function removeMeter() {
-            const data = { IDM: document.getElementById("removeMeterID").value };
+            const data = { meterId: document.getElementById("meterId").value };
             await fetch('/removeMeter', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -15,11 +49,13 @@
     </script>
 </head>
 <body>
-    <h2>Remove Smart Meter</h2>
-    <form>
-        <label>Meter ID:</label>
-        <input type="text" id="removeMeterID" required><br>
-        <button type="button" onclick="removeMeter()">Remove Meter</button>
-    </form>
+    <div class="container">
+        <h2>Remove Smart Meter</h2>
+        <form>
+            <label>Meter ID:</label><br>
+            <input type="text" id="meterId" required><br>
+            <button type="button" onclick="removeMeter()">Remove Meter</button>
+        </form>
+    </div>
 </body>
 </html>

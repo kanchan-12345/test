@@ -3,9 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Remove Fog Node</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        input {
+            padding: 8px;
+            margin: 10px 0;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #ff4c4c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #d43f3f;
+        }
+    </style>
     <script>
         async function removeFogNode() {
-            const data = { IDF: document.getElementById("removeFogID").value };
+            const data = { id: document.getElementById("id").value };
             await fetch('/removeFogNode', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -15,11 +49,13 @@
     </script>
 </head>
 <body>
-    <h2>Remove Fog Node</h2>
-    <form>
-        <label>Fog Node ID:</label>
-        <input type="text" id="removeFogID" required><br>
-        <button type="button" onclick="removeFogNode()">Remove Fog Node</button>
-    </form>
+    <div class="container">
+        <h2>Remove Fog Node</h2>
+        <form>
+            <label>Fog Node ID:</label><br>
+            <input type="text" id="id" required><br>
+            <button type="button" onclick="removeFogNode()">Remove Fog Node</button>
+        </form>
+    </div>
 </body>
 </html>
