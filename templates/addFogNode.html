@@ -20,27 +20,31 @@
             background-color: #ffffff;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 400px;
         }
 
         h2 {
             text-align: center;
             color: #333;
+            margin-bottom: 20px;
         }
 
         label {
             font-size: 14px;
             font-weight: bold;
             color: #333;
+            display: block;
+            margin-bottom: 5px;
         }
 
         input {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 10px 0 20px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box;
         }
 
         button {
@@ -52,6 +56,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -61,22 +66,25 @@
         .error {
             color: red;
             font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
     <script>
-
         async function addFogNode() {
             const nodeId = document.getElementById("nodeID").value;
             const location = document.getElementById("location").value;
+            const password = document.getElementById("password").value;
 
-            if (!nodeId || !location) {
-                document.getElementById("errorMessage").textContent = "Please fill in both fields.";
+            if (!nodeId || !location || !password) {
+                document.getElementById("errorMessage").textContent = "Please fill in all fields.";
                 return;
             }
 
             const data = {
                 node_id: nodeId,
-                location: location
+                location: location,
+                password: password
             };
 
             try {
@@ -86,13 +94,14 @@
                     body: JSON.stringify(data)
                 });
 
-                if (!response.ok) { // Check if the response is not successful
+                if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const jsonResponse = await response.json();
                 if (jsonResponse.message === "Fog node added successfully!") {
-                    alert("Fog Node added successfully!");
+                    localStorage.setItem("node_id", nodeId);
+                    window.location.href = "/fog-dashboard";
                 } else {
                     alert("Error: " + jsonResponse.message);
                 }
@@ -100,10 +109,6 @@
                 alert("There was an error with the request: " + error);
             }
         }
-
-
-
-
     </script>
 </head>
 
@@ -117,8 +122,8 @@
             <label for="location">Location:</label>
             <input type="text" id="location" required><br>
 
-            <label for="password">password:</label>
-            <input type="text" id="password" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required><br>
 
             <button type="button" onclick="addFogNode()">Add Fog Node</button>
             <p id="errorMessage" class="error"></p>

@@ -3,40 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>stored energy comsumption</title>
+    <title>Energy Consumption Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --success: #2ecc71;
+            --text: #2c3e50;
+            --background: #f5f6fa;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
             text-align: center;
-            background-color: #f4f4f4;
-            padding: 20px;
+            margin-bottom: 2.5rem;
+            padding: 1rem;
         }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+
+        .dashboard-header p {
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
         .container {
-            width: 80%;
-            margin: auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
         }
+
         .card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: left;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        h2 {
-            color: #007BFF;
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
-        h3 {
-            color: #28a745;
+
+        .card h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card i {
+            color: var(--accent);
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .billing-value {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <h2>Electricity Usage Dashboard</h2>
+    <div class="dashboard-header">
+        <h1>Energy Consumption Dashboard</h1>
+        <p>Monitor your electricity usage and costs in real-time</p>
+    </div>
     <div class="container">
         <div class="card" id="consumption"></div>
         <div class="card" id="billing"></div>
@@ -45,15 +140,56 @@
     <script>
         async function fetchData() {
             const consumptionData = await fetch('/consumption').then(res => res.json());
-            document.getElementById('consumption').innerHTML = `<h3>Consumption</h3><p>Today: ${consumptionData.today} kWh</p><p>This Month: ${consumptionData.this_month} kWh</p>`;
+            document.getElementById('consumption').innerHTML = `
+                <h3><i class="fas fa-bolt"></i> Consumption Overview</h3>
+                <div class="metric">
+                    <span class="metric-label">Today</span>
+                    <span class="metric-value">${consumptionData.today.toFixed(2)} kWh</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Yesterday</span>
+                    <span class="metric-value">${consumptionData.yesterday.toFixed(2)} kWh</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">This Month</span>
+                    <span class="metric-value">${consumptionData.this_month.toFixed(2)} kWh</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Last Month</span>
+                    <span class="metric-value">${consumptionData.last_month.toFixed(2)} kWh</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">This Year</span>
+                    <span class="metric-value">${consumptionData.this_year.toFixed(2)} kWh</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Last Year</span>
+                    <span class="metric-value">${consumptionData.last_year.toFixed(2)} kWh</span>
+                </div>
+            `;
             
             const billingData = await fetch('/billing').then(res => res.json());
-            document.getElementById('billing').innerHTML = `<h3>Billing</h3><p>This Month: $${billingData.this_month}</p>`;
+            document.getElementById('billing').innerHTML = `
+                <h3><i class="fas fa-file-invoice-dollar"></i> Billing Summary</h3>
+                <div class="metric">
+                    <span class="metric-label">This Month</span>
+                    <span class="billing-value">$${billingData.this_month.toFixed(2)}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Last Month</span>
+                    <span class="billing-value">$${billingData.last_month.toFixed(2)}</span>
+                </div>
+            `;
             
             const applianceData = await fetch('/appliance-consumption').then(res => res.json());
-            let applianceHTML = '<h3>Appliance Consumption</h3>';
+            let applianceHTML = '<h3><i class="fas fa-plug"></i> Appliance Usage</h3>';
             for (let [key, value] of Object.entries(applianceData)) {
-                applianceHTML += `<p>${key}: ${value} kWh</p>`;
+                applianceHTML += `
+                    <div class="metric">
+                        <span class="metric-label">${key}</span>
+                        <span class="metric-value">${value.toFixed(2)} kWh</span>
+                    </div>
+                `;
             }
             document.getElementById('applianceConsumption').innerHTML = applianceHTML;
         }

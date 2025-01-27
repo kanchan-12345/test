@@ -1,0 +1,24 @@
+Dashboard:
+    show a table which will contain the information of each meter (table should show al leat 20 rows) 
+    information:
+        1. meter id 
+        2. total comsumption
+        3. total bill for this month
+        ..........
+Meter information:
+    A table which shows whole information of meter.
+    table:
+        1. meter id 
+        2. voltage
+        ....(every column of meter table)
+
+{
+    "refigrator" : {
+        "bill" : 1321,
+        "voltage" : jkabsjd
+    },
+    "heater" : y,
+    "light" : 0,
+    "gyeser" : 10,
+    "Ac" : 0
+}

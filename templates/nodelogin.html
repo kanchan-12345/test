@@ -1,26 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Fog</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-  <style>
-      body {
-          background-color: #f8f9fa;
-      }
-      .container {
-          margin-top: 100px;
-      }
-      .card {
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
-  </style>
+    <title>Fog</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        .card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script>
+        function sendData(event) {
+            event.preventDefault();
+            const nodeId = document.getElementById('node_id').value;
+            const password = document.getElementById('pwd').value;
+
+            fetch('/login-fog', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ node_id: nodeId, password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 200){
+                    localStorage.setItem('node_id', nodeId);
+                    window.location.href = '/fog-dashboard'; 
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
 </head>
 <body>
 
@@ -29,20 +56,11 @@
         <div class="col-sm-6">
             <div class="card">
                 <h2 class="text-center">Fog node</h2>
-                <form>
-
-
+                <form onsubmit="sendData(event)">
                     <div class="form-group">
-                        <label for="id">node_id:</label>
-                        <input type="id" class="form-control" id="node_id" placeholder="Enter node_id " name="node_id">
+                        <label for="node_id">node_id:</label>
+                        <input type="text" class="form-control" id="node_id" placeholder="Enter node_id" name="node_id">
                     </div>
-
-                    <div class="form-group">
-                        <label for="state">location:</label>
-                        <input type="text" class="form-control" id="location" placeholder="Enter location" name="location">
-                    </div>
-
-                    
                     <div class="form-group">
                         <label for="pwd">Password:</label>
                         <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password">

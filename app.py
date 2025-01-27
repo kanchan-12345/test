@@ -32,6 +32,7 @@ class SmartMeter(db.Model):
 class FogNode(db.Model):
     id = db.Column(db.String(50), primary_key=True)  # Fog Node ID
     location = db.Column(db.String(100), nullable=False)  # Location
+    password = db.Column(db.String(100), nullable=False)  # Password
 
 
 
@@ -51,6 +52,10 @@ class Meter(db.Model):
 with app.app_context():
     db.create_all()
 
+# @app.route('/remote-table', methods=['GET'])
+# def remove_fog_node_table():
+#     FogNode.__table__.drop(db.engine)
+#     return jsonify({"message": "Fog node table removed successfully!"}), 200
 
 
 # Route for Dashboard
@@ -136,13 +141,6 @@ def get_appliance_consumption():
     return jsonify(data)
 
 
-
-
-
-
-
-
-
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -176,9 +174,6 @@ def fog_login():
     return render_template('nodelogin.html')
 
 
-
-
-
 @app.route('/removeMeter')
 def removeMeter():
     return render_template('removeMeter.html')
@@ -190,6 +185,10 @@ def removeFogNode():
 @app.route('/meter-dashboard')
 def meter_dashboard():
     return render_template('meterDashboard.html')
+
+@app.route('/fog-dashboard')
+def fog_dashboard():
+    return render_template('fogDashboard.html')
 
 # API Endpoint to Add Smart Meter
 # API Endpoint to Add Smart Meter
@@ -227,11 +226,10 @@ def add_fog_node():
     data = request.json
     if not data.get('node_id') or not data.get('location'):
         return jsonify({"message": "Invalid data"}), 400
-
-    new_fog = FogNode(id=data['node_id'], location=data['location'])
+    new_fog = FogNode(id=data['node_id'], location=data['location'], password=data['password'])
     db.session.add(new_fog)
     db.session.commit()
-    return jsonify({"message": "Fog node added successfully!"}), 200
+    return jsonify({"message":"Fog node added successfully!"}), 200
 
 
 
@@ -322,13 +320,13 @@ def login_meter():
 
 
 
-@app.route('/login-fog', methods=['GET'])
+@app.route('/login-fog', methods=['POST'])
 def login_fog():
     data = request.json
-    FogNode = FogNode.query.get(data['id'])
+    fog_node = FogNode.query.get(data['node_id'])
     
-    if FogNode:
-        if(FogNode.password == data['password']):
+    if fog_node:
+        if(fog_node.password == data['password']):
             return jsonify({"message": "node logged in successfully!", "status": 200}), 200
         # algo to verify the signature
         # if signature is valid then return success
