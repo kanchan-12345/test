@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stored energy comsumption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: left;
+        }
+        h2 {
+            color: #007BFF;
+        }
+        h3 {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <h2>Electricity Usage Dashboard</h2>
+    <div class="container">
+        <div class="card" id="consumption"></div>
+        <div class="card" id="billing"></div>
+        <div class="card" id="applianceConsumption"></div>
+    </div>
+    <script>
+        async function fetchData() {
+            const consumptionData = await fetch('/consumption').then(res => res.json());
+            document.getElementById('consumption').innerHTML = `<h3>Consumption</h3><p>Today: ${consumptionData.today} kWh</p><p>This Month: ${consumptionData.this_month} kWh</p>`;
+            
+            const billingData = await fetch('/billing').then(res => res.json());
+            document.getElementById('billing').innerHTML = `<h3>Billing</h3><p>This Month: $${billingData.this_month}</p>`;
+            
+            const applianceData = await fetch('/appliance-consumption').then(res => res.json());
+            let applianceHTML = '<h3>Appliance Consumption</h3>';
+            for (let [key, value] of Object.entries(applianceData)) {
+                applianceHTML += `<p>${key}: ${value} kWh</p>`;
+            }
+            document.getElementById('applianceConsumption').innerHTML = applianceHTML;
+        }
+        fetchData();
+    </script>
+</body>
+</html>

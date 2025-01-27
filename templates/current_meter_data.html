@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Entry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        form {
+            width: 80%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        select {
+            width: 95%;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h2>Enter Electricity Consumption Data</h2>
+    <form id="dataForm">
+        
+        <table>
+            <tr>
+                <th>Appliance</th>
+                <th>Voltage (V)</th>
+                <th>Power (W)</th>
+                <th>Hours Used</th>
+            </tr>
+            <tr>
+                <td>Refrigerator</td>
+                <td><input type="number" id="voltage_refrigerator" required></td>
+                <td><input type="number" id="power_refrigerator" required></td>
+                <td><input type="number" id="hours_refrigerator" required></td>
+            </tr>
+            <tr>
+                <td>AC</td>
+                <td><input type="number" id="voltage_ac" required></td>
+                <td><input type="number" id="power_ac" required></td>
+                <td><input type="number" id="hours_ac" required></td>
+            </tr>
+            <tr>
+                <td>Light</td>
+                <td><input type="number" id="voltage_light" required></td>
+                <td><input type="number" id="power_light" required></td>
+                <td><input type="number" id="hours_light" required></td>
+            </tr>
+            <tr>
+                <td>Heater</td>
+                <td><input type="number" id="voltage_heater" required></td>
+                <td><input type="number" id="power_heater" required></td>
+                <td><input type="number" id="hours_heater" required></td>
+            </tr>
+            <tr>
+                <td>Geyser</td>
+                <td><input type="number" id="voltage_geyser" required></td>
+                <td><input type="number" id="power_geyser" required></td>
+                <td><input type="number" id="hours_geyser" required></td>
+            </tr>
+            <tr>
+                <td>Others</td>
+                <td><input type="number" id="voltage_others" required></td>
+                <td><input type="number" id="power_others" required></td>
+                <td><input type="number" id="hours_others" required></td>
+            </tr>
+        </table>
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        document.getElementById('dataForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const appliances = ['refrigerator', 'ac', 'light', 'heater', 'geyser'];
+            let data = [];
+            appliances.forEach(appliance => {
+                data.push({
+                    appliance: appliance.charAt(0).toUpperCase() + appliance.slice(1),
+                    voltage: document.getElementById(`voltage_${appliance}`).value,
+                    power: document.getElementById(`power_${appliance}`).value,
+                    hours: document.getElementById(`hours_${appliance}`).value
+                });
+            });
+            const response = await fetch('/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data })
+            });
+            const result = await response.json();
+            alert(result.message);
+        });
+    </script>
+</body>
+</html>
+
