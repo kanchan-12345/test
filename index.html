@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Meter Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .meter { margin: 10px; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+<h1>Smart Meter Dashboard</h1>
+
+<div>
+    <h2>Add New Meter</h2>
+    <input type="text" id="meterName" placeholder="Meter Name" required>
+    <button onclick="addMeter()">Add Meter</button>
+</div>
+
+<div id="dashboard"></div>
+
+<script>
+    let meters = [];
+
+    function addMeter() {
+        const meterName = document.getElementById('meterName').value;
+        if (meterName) {
+            meters.push({ name: meterName, data: Math.random() * 100 }); // Simulated data
+            document.getElementById('meterName').value = '';
+            updateDashboard();
+        }
+    }
+
+    function updateDashboard() {
+        const dashboard = document.getElementById('dashboard');
+        dashboard.innerHTML = ''; // Clear existing dashboard
+        meters.forEach(meter => {
+            const meterDiv = document.createElement('div');
+            meterDiv.className = 'meter';
+            meterDiv.innerHTML = `<strong>${meter.name}</strong>: ${meter.data.toFixed(2)} kWh`;
+            dashboard.appendChild(meterDiv);
+        });
+    }
+</script>
+
+</body>
+</html>

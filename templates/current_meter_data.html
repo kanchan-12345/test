@@ -10,7 +10,63 @@
             text-align: center;
             background-color: #f4f4f4;
             padding: 20px;
+            display: flex; /* Use flexbox for layout */
         }
+
+        .sidebar {
+            width: 60px; /* Width when collapsed */
+            background: #2c3e50;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+            transition: width 0.3s ease;
+            overflow: hidden; /* Hide overflow */
+        }
+
+        .sidebar:hover {
+            width: 200px; /* Width when expanded */
+        }
+
+        .sidebar h2 {
+            display: none; /* Hide title when collapsed */
+        }
+
+        .sidebar:hover h2 {
+            display: block; /* Show title when expanded */
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            opacity: 0; /* Hide links initially */
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar:hover a {
+            opacity: 1; /* Show links when expanded */
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+        }
+
+        .content {
+            margin-left: 80px; /* Adjust margin for collapsed sidebar */
+            padding: 20px;
+            width: calc(100% - 80px); /* Adjust width for collapsed sidebar */
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        .sidebar:hover + .content {
+            margin-left: 220px; /* Adjust margin for expanded sidebar */
+            width: calc(100% - 220px); /* Adjust width for expanded sidebar */
+        }
+
         form {
             width: 80%;
             margin: auto;
@@ -19,20 +75,24 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+
         th, td {
             border: 1px solid black;
             padding: 10px;
             text-align: center;
         }
+
         th {
             background-color: #007BFF;
             color: white;
         }
+
         input {
             width: 90%;
             padding: 8px;
@@ -40,11 +100,13 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         select {
             width: 95%;
             padding: 8px;
             border-radius: 5px;
         }
+
         button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -55,61 +117,73 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
         button:hover {
             background-color: #218838;
         }
     </style>
 </head>
 <body>
-    <h2>Enter Electricity Consumption Data</h2>
-    <form id="dataForm">
-        
-        <table>
-            <tr>
-                <th>Appliance</th>
-                <th>Voltage (V)</th>
-                <th>Power (W)</th>
-                <th>Hours Used</th>
-            </tr>
-            <tr>
-                <td>Refrigerator</td>
-                <td><input type="number" id="voltage_refrigerator" ></td>
-                <td><input type="number" id="power_refrigerator" ></td>
-                <td><input type="number" id="hours_refrigerator" ></td>
-            </tr>
-            <tr>
-                <td>AC</td>
-                <td><input type="number" id="voltage_ac" ></td>
-                <td><input type="number" id="power_ac" ></td>
-                <td><input type="number" id="hours_ac" ></td>
-            </tr>
-            <tr>
-                <td>Light</td>
-                <td><input type="number" id="voltage_light" ></td>
-                <td><input type="number" id="power_light" ></td>
-                <td><input type="number" id="hours_light" ></td>
-            </tr>
-            <tr>
-                <td>Heater</td>
-                <td><input type="number" id="voltage_heater" ></td>
-                <td><input type="number" id="power_heater" ></td>
-                <td><input type="number" id="hours_heater" ></td>
-            </tr>
-            <tr>
-                <td>Geyser</td>
-                <td><input type="number" id="voltage_geyser" ></td>
-                <td><input type="number" id="power_geyser" ></td>
-                <td><input type="number" id="hours_geyser" ></td>
-            </tr>
-            <tr>
-                <td>Others</td>
-                <td><input type="number" id="voltage_others" ></td>
-                <td><input type="number" id="power_others" ></td>
-                <td><input type="number" id="hours_others" ></td>
-            </tr>
-        </table>
-        <button type="submit">Submit</button>
-    </form>
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <a href="meter_entry">Home</a>
+        <a href="current_meter_data" class="btn btn-primary btn-block">Current Data</a>
+        <a href="result" class="btn btn-primary btn-block">Billing</a>
+        <a href="contact" class="btn btn-primary btn-block">Contact-Us</a>
+    
+    </div>
+
+    <div class="content">
+        <h2>Enter Electricity Consumption Data</h2>
+        <form id="dataForm">
+            <table>
+                <tr>
+                    <th>Appliance</th>
+                    <th>Voltage (V)</th>
+                    <th>Power (W)</th>
+                    <th>Hours Used</th>
+                </tr>
+                <tr>
+                    <td>Refrigerator</td>
+                    <td><input type="number" id="voltage_refrigerator"></td>
+                    <td><input type="number" id="power_refrigerator"></td>
+                    <td><input type="number" id="hours_refrigerator"></td>
+                </tr>
+                <tr>
+                    <td>AC</td>
+                    <td><input type="number" id="voltage_ac"></td>
+                    <td><input type="number" id="power_ac"></td>
+                    <td><input type="number" id="hours_ac"></td>
+                </tr>
+                <tr>
+                    <td>Light</td>
+                    <td><input type="number" id="voltage_light"></td>
+                    <td><input type="number" id="power_light"></td>
+                    <td><input type="number" id="hours_light"></td>
+                </tr>
+                <tr>
+                    <td>Heater</td>
+                    <td><input type="number" id="voltage_heater"></td>
+                    <td><input type="number" id="power_heater"></td>
+                    <td><input type="number" id="hours_heater"></td>
+                </tr>
+                <tr>
+                    <td>Geyser</td>
+                    <td><input type="number" id="voltage_geyser"></td>
+                    <td><input type="number" id="power_geyser"></td>
+                    <td><input type="number" id="hours_geyser"></td>
+                </tr>
+                <tr>
+                    <td>Others</td>
+                    <td><input type="number" id="voltage_others"></td>
+                    <td><input type="number" id="power_others"></td>
+                    <td><input type="number" id="hours_others"></td>
+                </tr>
+            </table>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
     <script>
         document.getElementById('dataForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -134,4 +208,3 @@
     </script>
 </body>
 </html>
-

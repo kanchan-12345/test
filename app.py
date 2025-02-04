@@ -59,9 +59,16 @@ with app.app_context():
 
 
 # Route for Dashboard
+
 @app.route('/result')
-def dashboard():
+def result():
     return render_template('result.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contactus.html')
+
+
 
 # Route for Data Entry Page
 @app.route('/current_meter_data')

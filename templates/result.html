@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Energy Consumption Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <style>
         :root {
             --primary: #2c3e50;
@@ -28,6 +30,60 @@
             color: var(--text);
             line-height: 1.6;
             padding: 2rem;
+        }
+
+        .sidebar {
+            width: 60px; /* Width when collapsed */
+            background: #2c3e50;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+            transition: width 0.3s ease;
+            overflow: hidden; /* Hide overflow */
+        }
+
+        .sidebar:hover {
+            width: 200px; /* Width when expanded */
+        }
+
+        .sidebar h2 {
+            display: none; /* Hide title when collapsed */
+        }
+
+        .sidebar:hover h2 {
+            display: block; /* Show title when expanded */
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            opacity: 0; /* Hide links initially */
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar:hover a {
+            opacity: 1; /* Show links when expanded */
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+        }
+
+        .content {
+            margin-left: 80px; /* Adjust margin for collapsed sidebar */
+            padding: 20px;
+            width: calc(100% - 80px); /* Adjust width for collapsed sidebar */
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        .sidebar:hover + .content {
+            margin-left: 220px; /* Adjust margin for expanded sidebar */
+            width: calc(100% - 220px); /* Adjust width for expanded sidebar */
         }
 
         .dashboard-header {
@@ -128,15 +184,27 @@
     </style>
 </head>
 <body>
-    <div class="dashboard-header">
-        <h1>Energy Consumption Dashboard</h1>
-        <p>Monitor your electricity usage and costs in real-time</p>
+
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <a href="meter_entry">Home</a>
+        <a href="current_meter_data" class="btn btn-primary btn-block">Current Data</a>
+        <a href="result" class="btn btn-primary btn-block">Billing</a>
+        <a href="contact" class="btn btn-primary btn-block">Contact-Us</a>
     </div>
-    <div class="container">
-        <div class="card" id="consumption"></div>
-        <div class="card" id="billing"></div>
-        <div class="card" id="applianceConsumption"></div>
+    
+    <div class="content">
+        <div class="dashboard-header">
+            <h1>Energy Consumption Dashboard</h1>
+            <p>Monitor your electricity usage and costs in real-time</p>
+        </div>
+        <div class="container">
+            <div class="card" id="consumption"></div>
+            <div class="card" id="billing"></div>
+            <div class="card" id="applianceConsumption"></div>
+        </div>
     </div>
+
     <script>
         async function fetchData() {
             const consumptionData = await fetch('/consumption').then(res => res.json());
